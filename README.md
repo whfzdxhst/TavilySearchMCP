@@ -117,23 +117,3 @@ python -m tavily_search_mcp.client --url http://127.0.0.1:21029/mcp web-fetch "h
 .\scripts\deploy_remote.ps1 -HostName "your-server.example" -User "ubuntu" -IdentityFile "<path-to-private-key>"
 ```
 
-脚本会打包当前工作区，并排除 `.git`、`.env`、`.conda` 等本地文件。上传后，它会在服务器上安装依赖并启动 MCP 服务。
-
-公开访问服务前，请在服务器上的 `.env` 中配置实际访问域名或主机名：
-
-```env
-TAVILY_API_KEY=tvly-your-api-key
-MCP_SERVER_HOST=0.0.0.0
-MCP_SERVER_PORT=21029
-MCP_SERVER_PATH=/mcp
-MCP_ALLOWED_HOSTS=your-domain.example,your-domain.example:21029
-MCP_ALLOWED_ORIGINS=*
-```
-
-## 安全注意事项
-
-- 不要提交 `.env` 或任何真实 API Key。
-- 不要提交 SSH 私钥、服务器 IP、私有主机名或本机密钥路径。
-- 公网部署时，请按你的实际环境配置防火墙、安全组、反向代理或网关。
-- 如果密钥曾经被误提交或误公开，请立即轮换密钥。
-
