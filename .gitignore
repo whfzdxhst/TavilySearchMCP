@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environments and secrets
+.conda/
+.conda-pkgs/
+.venv/
+venv/
+.env
+*.pem
+*.key
+
+# Logs and local runtime files
+*.log
+logs/
+run/
+tmp/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
