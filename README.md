@@ -1,35 +1,34 @@
 # Tavily Search MCP
 
-Tavily Search MCP is a Streamable HTTP MCP server that exposes Tavily web search
-and page extraction as MCP tools.
+Tavily Search MCP 是一个基于 Streamable HTTP 的 MCP 服务，用于把 Tavily 的联网搜索和网页内容提取能力封装成 MCP 工具。
 
-## Tools
+## 功能
 
-- `web_search`: Search the web from a query string.
-- `web_fetch`: Extract readable text content from a web page URL.
+- `web_search`：根据查询关键字进行联网搜索。
+- `web_fetch`：根据网页 URL 提取可读文本内容。
 
-## Requirements
+## 环境要求
 
 - Python 3.11+
-- A Tavily API key
-- An MCP client that supports `streamable_http`
+- Tavily API Key
+- 支持 `streamable_http` 的 MCP 客户端
 
-## Installation
+## 安装
 
-Create and activate your preferred Python environment, then install the project:
+先创建并启用你自己的 Python 虚拟环境，然后安装依赖和当前项目：
 
 ```bash
 python -m pip install -r requirements.txt
 python -m pip install -e .
 ```
 
-Create a local environment file:
+复制环境变量模板：
 
 ```bash
 cp .env.example .env
 ```
 
-Fill in `.env`:
+在 `.env` 中填写配置：
 
 ```env
 TAVILY_API_KEY=tvly-your-api-key
@@ -40,50 +39,49 @@ MCP_ALLOWED_HOSTS=127.0.0.1,127.0.0.1:21029,localhost,localhost:21029
 MCP_ALLOWED_ORIGINS=*
 ```
 
-For a server deployment, set `MCP_SERVER_HOST=0.0.0.0` and add the public
-domain or host, with port, to `MCP_ALLOWED_HOSTS`.
+如果部署到服务器，请将 `MCP_SERVER_HOST` 设置为 `0.0.0.0`，并把你的公网域名或访问主机名加入 `MCP_ALLOWED_HOSTS`。
 
-## Run The Server
+## 启动服务
 
 ```bash
 python -m tavily_search_mcp.server
 ```
 
-Default local endpoint:
+默认本地 MCP 地址：
 
 ```text
 http://127.0.0.1:21029/mcp
 ```
 
-Health check:
+健康检查：
 
 ```bash
 curl http://127.0.0.1:21029/health
 ```
 
-## Test Client
+## 测试客户端
 
-List tools:
+列出 MCP 工具：
 
 ```bash
 python -m tavily_search_mcp.client --url http://127.0.0.1:21029/mcp list-tools
 ```
 
-Search the web:
+调用联网搜索：
 
 ```bash
 python -m tavily_search_mcp.client --url http://127.0.0.1:21029/mcp web-search "Tavily Python SDK" --max-results 2
 ```
 
-Fetch a page:
+调用网页内容提取：
 
 ```bash
 python -m tavily_search_mcp.client --url http://127.0.0.1:21029/mcp web-fetch "https://docs.tavily.com/"
 ```
 
-## MCP Client Configuration
+## MCP 客户端配置
 
-Local example:
+本地服务示例：
 
 ```json
 {
@@ -97,7 +95,7 @@ Local example:
 }
 ```
 
-Remote example:
+远程服务示例：
 
 ```json
 {
@@ -111,20 +109,17 @@ Remote example:
 }
 ```
 
-## Deploy To A Server
+## 部署到服务器
 
-You can deploy with your own SSH key:
+可以使用仓库中的部署脚本，通过你自己的 SSH key 上传并启动服务：
 
 ```powershell
 .\scripts\deploy_remote.ps1 -HostName "your-server.example" -User "ubuntu" -IdentityFile "<path-to-private-key>"
 ```
 
-The script uploads the current working tree, excluding `.git`, `.env`, `.conda`,
-and other local-only files. On the server it installs dependencies and starts
-the MCP server.
+脚本会打包当前工作区，并排除 `.git`、`.env`、`.conda` 等本地文件。上传后，它会在服务器上安装依赖并启动 MCP 服务。
 
-Before exposing the service publicly, configure the server `.env` with the
-correct host, port, and allowed hosts:
+公开访问服务前，请在服务器上的 `.env` 中配置实际访问域名或主机名：
 
 ```env
 TAVILY_API_KEY=tvly-your-api-key
@@ -135,10 +130,10 @@ MCP_ALLOWED_HOSTS=your-domain.example,your-domain.example:21029
 MCP_ALLOWED_ORIGINS=*
 ```
 
-## Security
+## 安全注意事项
 
-- Never commit `.env` or real API keys.
-- Never commit SSH keys, server IPs, private hostnames, or local key paths.
-- Keep public deployments behind firewall, security group, proxy, or gateway
-  rules appropriate for your environment.
-- Rotate any key that was accidentally shared or committed.
+- 不要提交 `.env` 或任何真实 API Key。
+- 不要提交 SSH 私钥、服务器 IP、私有主机名或本机密钥路径。
+- 公网部署时，请按你的实际环境配置防火墙、安全组、反向代理或网关。
+- 如果密钥曾经被误提交或误公开，请立即轮换密钥。
+
